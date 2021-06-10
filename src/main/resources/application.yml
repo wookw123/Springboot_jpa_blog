@@ -1,0 +1,9 @@
+#모든 spring 설정을 여기에서 한다.
+
+#mysql DB와 연결
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Seoul
+    username: spring
+    password: spring
