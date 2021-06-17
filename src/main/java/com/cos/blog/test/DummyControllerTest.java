@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,7 +43,7 @@ public class DummyControllerTest {
 		
 		try {
 			userRepository.deleteById(id);			
-		} catch (IllegalArgumentException e) {
+		} catch (EmptyResultDataAccessException e) { //그냥 Exception(모든 ex의 부모기때문)으로 해도괜찮지만 다른 예외일수도 있으니 정확하게 하면 좋다.
 			return "삭제에 실패했습니다(해당 ID가 없습니다)";
 		}
 		return "user : "+ id  + " 삭제되었습니다";
@@ -58,6 +59,7 @@ public class DummyControllerTest {
 		User user = userRepository.findById(id).orElseThrow(()->{
 			return new IllegalArgumentException("수정에실패했습니다");
 		});
+		
 		user.setPassword(requestUser.getPassword());
 		user.setEmail(requestUser.getEmail());
 		
@@ -92,7 +94,7 @@ public class DummyControllerTest {
 			@Override
 			public IllegalArgumentException get() {
 				// TODO Auto-generated method stub
-				return new IllegalArgumentException("존재하지 않는 유저입니다. id : " + id);
+				return new IllegalArgumentException("존재하지 않는 유저입니다.");
 			}
 		});
 		//요청 = 웹 브라우저에서 했다.

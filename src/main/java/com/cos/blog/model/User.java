@@ -31,7 +31,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //프로젝트에서 연결된 DB(현재 mysql)의 넘버링 전략을 따라간다
 	private int id; //오라클의 sequence , mysql 의 auto_increment
 	
-	@Column(nullable = false , length = 30)//컬럼은 null이면 안되고 길이는 20자로 제한
+	@Column(nullable = false , length = 30 , unique = true)//컬럼은 null이면 안되고 길이는 20자로 제한 그리고 중복을 제한한다.
 	private String username; //아이디
 	
 	@Column(nullable = false , length = 100) //비밀번호를 해쉬로 변경(암호화) 하기위해 넉넉하게 한다
