@@ -9,8 +9,7 @@ let index = {
 		//alert("user의 save함수 호출됨");
 		let data = {
 			username : $("#username").val(),
-			password : $("#password").val(),
-			email : $("#email").val() //jsp파일의 입력칸 id 이름이랑 같아야한다.
+			password : $("#password").val(),			
 		};
 		
 		//console.log(data);
@@ -27,6 +26,29 @@ let index = {
 		}).done(function(resp){ //응답의 결과가 정상이면 실행
 			alert("회원가입 완료");
 			console.log(resp);
+			location.href = "/blog";
+		}).fail(function(error){ //응답의 결과가 비정상이면 실행
+			alert(JSON.stringify(error));
+		}); 
+	},
+	
+	login:function(){
+		//alert("user의 save함수 호출됨");
+		let data = {
+			username : $("#username").val(),
+			password : $("#password").val(),
+		
+		};
+		
+		
+		$.ajax({
+			type:"POST",
+			url:"/blog/api/user/login",
+			data : JSON.stringify(data), 
+			contentType : "application/json; charset = utf-8", 
+			dataType:"json"  			
+		}).done(function(resp){ //응답의 결과가 정상이면 실행
+			alert("로그인 완료");			
 			location.href = "/blog";
 		}).fail(function(error){ //응답의 결과가 비정상이면 실행
 			alert(JSON.stringify(error));
