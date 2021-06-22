@@ -22,7 +22,7 @@ public class UserApiController {
 	//@Autowired
 	//private HttpSession session;
 
-	@PostMapping("/api/user")
+	@PostMapping("/auth/joinProc")
 	public ResponseDto<Integer> save(@RequestBody User user  ) {
 		System.out.println("UserApiController : save 호출됨");
 		user.setRole(RoleType.USER);
@@ -39,7 +39,7 @@ public class UserApiController {
 //			session.setAttribute("principal",principal);
 //		}
 //		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
-//	}
+//	} //전통적 로그인 방식 사용안하고 시큐리티로 로그인 할것이다.
 	
 
 }
