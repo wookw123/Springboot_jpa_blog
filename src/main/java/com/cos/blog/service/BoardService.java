@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 //스프링이 컴포넌트 스캔을 통해 Bean에 등록을 해줌. ioc를 해준다
 @Service
 public class BoardService {
@@ -23,6 +25,10 @@ public class BoardService {
 		board.setCount(0);
 		board.setUser(user);
 		boardRepository.save(board);
+	}
+
+	public List<Board> 글목록(){
+		return boardRepository.findAll();
 	}
 
 //	@Transactional(readOnly = true) //Select할때 트랜잭션 시작 , 서비스 종료시 트랜잭션 종료 (정합성을 유지시켜준다)
