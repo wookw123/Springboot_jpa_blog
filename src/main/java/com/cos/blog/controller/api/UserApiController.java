@@ -2,8 +2,15 @@ package com.cos.blog.controller.api;
 
 import javax.servlet.http.HttpSession;
 
+import com.cos.blog.config.auth.PrincipalDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,7 +28,8 @@ public class UserApiController {
 	@Autowired
 	private UserService userService;
 
-
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	//@Autowired
 	//private HttpSession session;
@@ -36,6 +44,16 @@ public class UserApiController {
 	@PutMapping("/user")
 	public ResponseDto<Integer> update(@RequestBody User user){ //@RequestBody - Json데이터를 받기위해 적음
 		userService.회원수정(user);
+		//여기서는 트랜잭션이 종료되기때문에 DB의 값은 변경이 됐음.
+		//하지만 세션값은 변경되지 않아 바로적용되지 않는다.(다시 로그인을 해야 변경됨)
+		//따라서 직접 세션값을 변경해주어야 한다.
+		//세션등록
+
+
+
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
 	}
 	
