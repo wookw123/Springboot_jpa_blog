@@ -1,10 +1,14 @@
 package com.cos.blog.service;
 
+import com.cos.blog.DTO.ReplySaveDto;
 import com.cos.blog.model.Board;
+import com.cos.blog.model.Reply;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
+import com.cos.blog.repository.ReplyRespository;
 import com.cos.blog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +20,19 @@ import java.util.List;
 
 //스프링이 컴포넌트 스캔을 통해 Bean에 등록을 해줌. ioc를 해준다
 @Service
+@RequiredArgsConstructor //생성자 만들때 초기화가 필요한것들은 초기화 시켜준다
 public class BoardService {
 
+    private final BoardRepository boardRepository;
+    private final ReplyRespository replyRespository;
+
+//    public BoardService(BoardRepository bRepo, ReplyRespository rRepo){
+//        this.boardRepository = bRepo;
+//        this.replyRespository = rRepo;
+//    }
+
     @Autowired
-    private BoardRepository boardRepository;
+    private UserRepository userRepository;
 
     @Transactional
     public void 글쓰기(Board board, User user) {
@@ -57,6 +70,12 @@ public class BoardService {
         board.setTitle(requBoard.getTitle());
         board.setContent(requBoard.getContent());
         //해당함수 종료시 (Service가 종료될때) 트랜잭션이 종료. 이때 더티체킹-자동업데이트가 됨.DB Flush
+    }
+
+    @Transactional
+    public void 댓글작성(ReplySaveDto replySaveDto){
+
+       int result = replyRespository.mSave(replySaveDto.getUserId(),replySaveDto.getBoardId(),replySaveDto.getContent());
     }
 
 //	@Transactional(readOnly = true) //Select할때 트랜잭션 시작 , 서비스 종료시 트랜잭션 종료 (정합성을 유지시켜준다)
